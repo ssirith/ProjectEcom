@@ -174,6 +174,16 @@ public class ProfileJpaController implements Serializable {
             em.close();
         }
     }
+    public Profile findProfileAccount(Account accountid) {
+        EntityManager em = getEntityManager();
+        Query q = em.createNamedQuery("Profile.findByAccountid");
+        q.setParameter("accountid", accountid);
+        try {
+            return (Profile) q.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
 
     public int getProfileCount() {
         EntityManager em = getEntityManager();

@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import project.model.Account;
+import project.model.Profile;
 import project.model.controller.AccountJpaController;
+import project.model.controller.ProfileJpaController;
 
 /**
  *
@@ -44,10 +46,16 @@ UserTransaction utx;
         String password = request.getParameter("password");
         if (email != null && password != null) {
             AccountJpaController acCtrl = new AccountJpaController(utx, emf);
+            ProfileJpaController proJpa = new ProfileJpaController(utx, emf);
             Account account = acCtrl.findAccountEmail(email);
+            Profile profile = proJpa.findProfileAccount(account);
             if (account != null) {
                 if (account.getEmail().equals(email)&&account.getPassword().equals(password)) {
                     session.setAttribute("account", account);
+                    session.setAttribute("profile", profile);
+                    System.out.println("=====================================================================");
+                    System.out.println(profile);
+                    System.out.println("=====================================================================");
                     getServletContext().getRequestDispatcher("/index.html").forward(request, response);
                     return;
                 }
